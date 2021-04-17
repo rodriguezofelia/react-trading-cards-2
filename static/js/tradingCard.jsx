@@ -1,4 +1,4 @@
-var tradingCardData = [
+const tradingCardData = [
   {
     name: 'Balloonicorn',
     skill: 'video games',
@@ -29,9 +29,19 @@ function TradingCard(props) {
 }
 
 function TradingCardContainer() {
+
+  const [cards, updateCards] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch('/cards.json')
+    .then((response) => response.json())
+    .then((data) => updateCards(data.cards));
+  }, []);
+  
+
   const tradingCards = [];
 
-  for (const currentCard of tradingCardData) {
+  for (const currentCard of cards) {
     tradingCards.push(
       <TradingCard
         key={currentCard.name}
@@ -51,3 +61,4 @@ ReactDOM.render(
   <TradingCardContainer />,
   document.getElementById('container')
 );
+
